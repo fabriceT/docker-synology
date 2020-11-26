@@ -1,17 +1,17 @@
 version: '3.3'
 
 services:
-  # grafana:
-  #   image: grafana/grafana
-  #   container_name: grafana
-  #   restart: always
-  #   links:
-  #     - prometheus
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ROOT/grafana/config/grafana.ini:/etc/grafana/grafana.ini
-  #     - ROOT/grafana/data/:/var/lib/grafana
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    links:
+      - prometheus
+    ports:
+      - "3010:3000"
+    volumes:
+      - ROOT/config/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ROOT/data/grafana/:/var/lib/grafana
 
   prometheus:
     image: prom/prometheus

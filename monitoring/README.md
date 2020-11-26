@@ -1,10 +1,11 @@
 # SynoMonitoring
 
 Setup a prometheus stack on Synology NAS with :
-- prometeus
+- prometheus
 - blackbox exporter
 - json exporter
 - alertmanager
+- grafana
 
 The JSON-exporter configuration is for my ESP-12 driven weather station.
 

@@ -9,7 +9,7 @@ mkdir -p ${PROMETHEUS_DATA_DIR}
 
 # Create config directories
 echo "Configuration directories creation"
-configs=( "prometheus" "alertmanager" "blackbox-exporter" "json-exporter" )
+configs=( "grafana" "prometheus" "alertmanager" "blackbox-exporter" "json-exporter" )
 for app in "${configs[@]}"; do
    [[ ! -d ${PROMETHEUS_CONFIG_DIR}/${app} ]] && mkdir -p ${PROMETHEUS_CONFIG_DIR}/${app} \
      && echo "config folder created for ${PROMETHEUS_CONFIG_DIR}/${app}"
@@ -18,7 +18,7 @@ echo "OK."
 
 # Create data directories
 echo "Data directories creation"
-datas=( "prometheus" "alertmanager" )
+datas=( "prometheus" "alertmanager" "grafana" )
 for app in "${datas[@]}"; do
   [[ ! -d ${PROMETHEUS_DATA_DIR}/${app} ]] && mkdir -p ${PROMETHEUS_DATA_DIR}/${app} \
     && echo "config folder created for ${PROMETHEUS_DATA_DIR}/${app}"
@@ -28,6 +28,7 @@ echo "OK."
 echo "Fixing directory permissions" 
 chown 65534:65534 ${PROMETHEUS_DATA_DIR}/prometheus #nobody userid
 chown 65534:65534 ${PROMETHEUS_DATA_DIR}/alertmanager #nobody userid
+chown 472:472 ${PROMETHEUS_DATA_DIR}/grafana #grafana grafana
 
 echo "Copying extra files"
 if [[ ! -f "${PROMETHEUS_CONFIG_DIR}/alertmanager/alertmanager.yml" ]]; then
@@ -38,6 +39,11 @@ fi
 if [[ ! -f "${PROMETHEUS_CONFIG_DIR}/json-exporter/config.yml" ]]; then
   echo "Copying json exporter config"
   cp config/json.yml ${PROMETHEUS_CONFIG_DIR}/json-exporter/config.yml
+fi
+
+if [[ ! -f "${PROMETHEUS_CONFIG_DIR}/grafana/grafana.ini" ]]; then
+  echo "Copying grafana config"
+  cp config/grafana.ini ${PROMETHEUS_CONFIG_DIR}/grafana/grafana.ini
 fi
 
 if [[ ! -f "${PROMETHEUS_CONFIG_DIR}/blackbox-exporter/config.yml" ]]; then
