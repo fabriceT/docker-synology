@@ -1,0 +1,15 @@
+---
+- name: nodemcu_load
+  path: $.System.Load
+
+- name: nodemcu_ram_free
+  path: $.System["Free RAM"]
+
+- name: nodemcu_sensor
+  type: object
+  path: $.Sensors[*].TaskValues[*]
+  labels:
+    name: $.Name
+  values:
+    value: $.Value
+

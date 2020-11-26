@@ -1,0 +1,75 @@
+version: '3.3'
+
+services:
+  # grafana:
+  #   image: grafana/grafana
+  #   container_name: grafana
+  #   restart: always
+  #   links:
+  #     - prometheus
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ROOT/grafana/config/grafana.ini:/etc/grafana/grafana.ini
+  #     - ROOT/grafana/data/:/var/lib/grafana
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    links:
+      - alertmanager
+      - node-exporter
+      - blackbox-exporter
+      - json-exporter
+    ports:
+      - "9090:9090"
+    volumes:
+      - ROOT/config/prometheus/:/etc/prometheus/
+      - ROOT/data/prometheus/:/prometheus
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    restart: always
+    ports:
+      - "9093:9093"
+    volumes:
+      - ROOT/data/alertmanager/:/alertmanager
+      - ROOT/config/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter
+    container_name: blackbox-exporter
+    restart: always
+    ports:
+      - "9115:9115"
+    volumes:
+      - ROOT/config/blackbox-exporter/config.yml:/etc/blackbox_exporter/config.yml
+
+  json-exporter:
+    image: prometheuscommunity/json-exporter
+    container_name: json-exporter
+    restart: always
+    command: http://192.168.0.246/json /config.yml
+    ports:
+      - "7979:7979"
+    volumes:
+      - ROOT/config/json-exporter/config.yml:/config.yml
+
+  node-exporter:
+    privileged: true
+    image: prom/node-exporter
+    container_name: node-exporter
+    restart: always
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.ignored-mount-points"
+      - "^/(rootfs/)?(dev|etc|host|proc|run|sys|volume1)($$|/)"
