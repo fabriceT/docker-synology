@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  gotify-server:
+    image: gotify/server
+    container_name: gotify
+    restart: always
+    ports:
+      - "84:80"
+    volumes:
+      - ROOT:/app/data/
