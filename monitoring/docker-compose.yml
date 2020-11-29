@@ -1,32 +1,25 @@
-version: '3.3'
+version: '3'
 
 services:
   grafana:
     image: grafana/grafana
     container_name: grafana
     restart: always
-    links:
-      - prometheus
     ports:
       - "3010:3000"
     volumes:
-      - ROOT/config/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ROOT/data/grafana/:/var/lib/grafana
+      - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./data/grafana/:/var/lib/grafana
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     restart: always
-    links:
-      - alertmanager
-      - node-exporter
-      - blackbox-exporter
-      - json-exporter
     ports:
       - "9090:9090"
     volumes:
-      - ROOT/config/prometheus/:/etc/prometheus/
-      - ROOT/data/prometheus/:/prometheus
+      - ./config/prometheus/:/etc/prometheus/
+      - ./data/prometheus/:/prometheus
 
   alertmanager:
     image: prom/alertmanager
@@ -35,8 +28,8 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ROOT/data/alertmanager/:/alertmanager
-      - ROOT/config/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./data/alertmanager/:/alertmanager
+      - ./config/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   blackbox-exporter:
     image: prom/blackbox-exporter
@@ -45,7 +38,7 @@ services:
     ports:
       - "9115:9115"
     volumes:
-      - ROOT/config/blackbox-exporter/config.yml:/etc/blackbox_exporter/config.yml
+      - ./config/blackbox-exporter/config.yml:/etc/blackbox_exporter/config.yml
 
   json-exporter:
     image: prometheuscommunity/json-exporter
@@ -55,7 +48,7 @@ services:
     ports:
       - "7979:7979"
     volumes:
-      - ROOT/config/json-exporter/config.yml:/config.yml
+      - ./config/json-exporter/config.yml:/config.yml
 
   node-exporter:
     privileged: true
