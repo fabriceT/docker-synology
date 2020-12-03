@@ -8,4 +8,4 @@ services:
     ports:
       - "84:80"
     volumes:
-      - ROOT:/app/data/
+      - /volume1/docker/gotify/:/app/data/
