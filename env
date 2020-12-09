@@ -1,0 +1,11 @@
+DOCKER_ROOT=/volume1/docker
+
+# Location of the container root directory
+APP_ROOT=${DOCKER_ROOT}/`basename $(pwd)`
+
+
+
+function compose {
+    cp -u docker-compose.yml ${APP_ROOT}
+    docker-compose -f ${APP_ROOT}/docker-compose.yml up -d
+}

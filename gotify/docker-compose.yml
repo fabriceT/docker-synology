@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 
 services:
   gotify-server:
@@ -8,4 +8,4 @@ services:
     ports:
       - "84:80"
     volumes:
-      - /volume1/docker/gotify/:/app/data/
+      - ./data:/app/data/
